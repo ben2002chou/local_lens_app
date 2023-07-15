@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter/foundation.dart';
 // This method currently works!
 Future<Map<String, dynamic>> fetchExchangeRates() async {
   final response =
@@ -51,3 +52,49 @@ void saveExchangeRates(Map<String, dynamic> rates) async {
   prefs.setString('exchangeRates', json.encode(rates));
   prefs.setInt('nextUpdate', rates['time_next_update_unix'] * 1000);  // Convert from seconds to milliseconds
 }
+
+
+
+
+Future<String> getMatches(String text) async {
+  RegExp regExp  = RegExp(r'(\p{Sc}|[a-zA-Z]{1,3})?\s*\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?\s*(\p{Sc}|[a-zA-Z]{1,3})?', unicode: true);
+  return regExp.allMatches(text).map((match) => text.substring(match.start, match.end)).join('\n');
+}
+
+Future<double> convertPrice(String priceString, double multiplier) async {
+  print("convertPrice received: $priceString");
+  priceString = priceString.replaceAll(',', '.');
+  double price = double.parse(priceString);
+  return price * multiplier;
+}
+
+Future<String> replaceInText(String text, String oldString, String newString) async {
+  return text.replaceAll(oldString, newString);
+}
+
+Future<String> processText(String text, double multiplier) async {
+  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{0,2})?)?\b');
+
+  var matches = regExp.allMatches(text);
+  if(matches.isEmpty) {
+    // No price found in the text
+    print('No matches found. Returning original text.');
+    return text;
+  }
+
+  print('${DateTime.now()}: Start getting matches');
+  String newText = text;  // Copy the original text to a new string
+  for (RegExpMatch match in matches) {
+    String priceString = text.substring(match.start, match.end);
+    print('${DateTime.now()}: Start converting price');
+    double newPrice = await convertPrice(priceString, multiplier);
+    print('${DateTime.now()}: End converting price');
+    newText = newText.replaceAll(
+      priceString,
+      newPrice.toStringAsFixed(2),
+    );
+  }
+  print('${DateTime.now()}: End replacing prices');
+  return newText;
+}
+
