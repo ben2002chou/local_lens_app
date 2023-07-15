@@ -61,7 +61,7 @@ Future<String> getMatches(String text) async {
   return regExp.allMatches(text).map((match) => text.substring(match.start, match.end)).join('\n');
 }
 
-Future<double> convertPrice(String priceString, double multiplier) async {
+Future<double?> convertPrice(String priceString, double multiplier) async {
   print("convertPrice received: $priceString");
   priceString = priceString.replaceAll(',', '.');
   double price = double.parse(priceString);
@@ -73,28 +73,27 @@ Future<String> replaceInText(String text, String oldString, String newString) as
 }
 
 Future<String> processText(String text, double multiplier) async {
-  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{0,2})?)?\b');
+  RegExp regExp  = RegExp(r'\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?');
 
-  var matches = regExp.allMatches(text);
-  if(matches.isEmpty) {
-    // No price found in the text
-    print('No matches found. Returning original text.');
-    return text;
-  }
-
-  print('${DateTime.now()}: Start getting matches');
   String newText = text;  // Copy the original text to a new string
-  for (RegExpMatch match in matches) {
+  for (RegExpMatch match in regExp.allMatches(text)) {
     String priceString = text.substring(match.start, match.end);
-    print('${DateTime.now()}: Start converting price');
-    double newPrice = await convertPrice(priceString, multiplier);
-    print('${DateTime.now()}: End converting price');
-    newText = newText.replaceAll(
-      priceString,
-      newPrice.toStringAsFixed(2),
-    );
+    
+    // Check if the priceString can be parsed to double before processing
+    if (isNumeric(priceString)) {
+      double? newPrice = await convertPrice(priceString, multiplier);
+      // If convertPrice returned null, skip this price
+      if (newPrice != null) {
+        newText = newText.replaceAll(
+          priceString,
+          newPrice.toStringAsFixed(2),  // Keep the decimal points
+        );
+      }
+    }
   }
-  print('${DateTime.now()}: End replacing prices');
   return newText;
 }
 
+bool isNumeric(String s) {
+  return double.tryParse(s) != null;
+}

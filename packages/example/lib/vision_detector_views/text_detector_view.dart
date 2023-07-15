@@ -5,6 +5,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'detector_view.dart';
 import 'painters/text_detector_painter.dart';
 import '../currency_conversion.dart';
+import '../main.dart';
 
 class TextRecognizerView extends StatefulWidget {
   @override
@@ -55,7 +56,7 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
       // // String translatedText = await onDeviceTranslator.translateText(text);
       // textBlock.text = convertedText.toString();
 
-      textBlock.text = await processText(textBlock.text, 2.0);
+      textBlock.text = await processText(textBlock.text, rate);
       
     }
     if (inputImage.metadata?.size != null &&

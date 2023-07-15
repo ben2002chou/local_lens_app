@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import 'nlp_detector_views/language_translator_view.dart';
 
@@ -22,11 +23,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void testFunction() async {
-  Map<String, dynamic> call = await loadExchangeRates();
-  // Now you can use the rates
-  const value = 1.0;
-  print(value * call['rates']['EUR']);
+var rate = 1.0;// global rate variable. This is the rate that will be used to convert the prices
+
+bool ratesFetched = false;// flag to indicate if the rates have been fetched from the API
+void getRates() async {
+  if (!ratesFetched) {
+    Map<String, dynamic> call = await loadExchangeRates();
+    // Now you can use the rates
+    rate = rate * (call['rates']['EUR']);
+    ratesFetched = true;
+  }
+  else {
+    print('Rates already fetched');
+  }
 }
 
 class Home extends StatelessWidget {
@@ -71,7 +80,7 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton(
-                      onPressed: testFunction,
+                      onPressed: getRates,
                       child: Text('Get USD to EUR Rate')),
                 ],
               ),
