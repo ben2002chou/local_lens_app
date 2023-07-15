@@ -4,7 +4,9 @@ import 'nlp_detector_views/language_translator_view.dart';
 
 import 'vision_detector_views/text_detector_view.dart';
 
+import 'currency_conversion.dart';
 Future<void> main() async {
+  print(await fetchExchangeRates());
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MyApp());
@@ -18,6 +20,13 @@ class MyApp extends StatelessWidget {
       home: Home(),
     );
   }
+}
+
+void testFunction() async {
+  Map<String, dynamic> call = await loadExchangeRates();
+  // Now you can use the rates
+  const value = 1.0;
+  print(value * call['rates']['EUR']);
 }
 
 class Home extends StatelessWidget {
@@ -39,9 +48,7 @@ class Home extends StatelessWidget {
                   ExpansionTile(
                     title: const Text('Vision APIs'),
                     children: [
-                
                       CustomCard('Text Recognition', TextRecognizerView()),
-               
                     ],
                   ),
                   SizedBox(
@@ -52,9 +59,20 @@ class Home extends StatelessWidget {
                     children: [
                       CustomCard(
                           'On-device Translation', LanguageTranslatorView()),
-      
                     ],
                   ),
+                  Text(
+                    'Rates By Exchange Rate API',
+                    style: TextStyle(
+                      color: Colors
+                          .blue, // Making the text color similar to a hyperlink
+                      decoration: TextDecoration
+                          .underline, // Underlining the text similar to a hyperlink
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: testFunction,
+                      child: Text('Get USD to EUR Rate')),
                 ],
               ),
             ),
