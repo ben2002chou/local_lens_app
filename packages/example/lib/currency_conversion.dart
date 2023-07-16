@@ -58,13 +58,13 @@ void saveExchangeRates(Map<String, dynamic> rates) async {
 
 
 Future<String> getMatches(String text) async {
-  RegExp regExp  = RegExp(r'(\p{Sc}|[a-zA-Z]{1,3})?\s*\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?\s*(\p{Sc}|[a-zA-Z]{1,3})?', unicode: true);
+  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{2})?)?\b');
   return regExp.allMatches(text).map((match) => text.substring(match.start, match.end)).join('\n');
 }
 
 Future<double?> convertPrice(String priceString, double multiplier) async {
   print("convertPrice received: $priceString");
-  priceString = priceString.replaceAll(',', '.');
+  priceString = priceString.replaceAll(',', '');
   double price = double.parse(priceString);
   return price * multiplier;
 }
@@ -74,26 +74,37 @@ Future<String> replaceInText(String text, String oldString, String newString) as
 }
 
 Future<String> processText(String text, double multiplier) async {
-  RegExp regExp  = RegExp(r'\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?');
+  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{2})?)?\b');
+  // Keep track of the offsets of the replacements to avoid overlapping
+  int offset = 0;
 
-  String newText = text;  // Copy the original text to a new string
+  // Use a StringBuffer for efficiency
+  StringBuffer buffer = StringBuffer();
+
   for (RegExpMatch match in regExp.allMatches(text)) {
     String priceString = text.substring(match.start, match.end);
-    
-    // Check if the priceString can be parsed to double before processing
     if (isNumeric(priceString)) {
       double? newPrice = await convertPrice(priceString, multiplier);
       // If convertPrice returned null, skip this price
-      if (newPrice != null) {
-        newText = newText.replaceAll(
-          priceString,
-          newPrice.toStringAsFixed(2),  // Keep the decimal points
-        );
-      }
+    if (newPrice != null) {
+      // Add the text before the match, and the replacement text
+      buffer
+        ..write(text.substring(offset, match.start))
+        ..write(newPrice.toStringAsFixed(2));  // Keep the decimal points
+      offset = match.end;
     }
+
+    }
+    
+    
   }
-  return newText;
+
+  // Add the remaining text after the last match
+  buffer.write(text.substring(offset));
+
+  return buffer.toString();
 }
+
 
 bool isNumeric(String s) {
   return double.tryParse(s) != null;
