@@ -57,24 +57,10 @@ void saveExchangeRates(Map<String, dynamic> rates) async {
 
 
 
-Future<String> getMatches(String text) async {
-  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{2})?)?\b');
-  return regExp.allMatches(text).map((match) => text.substring(match.start, match.end)).join('\n');
-}
-
-Future<double?> convertPrice(String priceString, double multiplier) async {
-  print("convertPrice received: $priceString");
-  priceString = priceString.replaceAll(',', '');
-  double price = double.parse(priceString);
-  return price * multiplier;
-}
-
-Future<String> replaceInText(String text, String oldString, String newString) async {
-  return text.replaceAll(oldString, newString);
-}
-
 Future<String> processText(String text, double multiplier) async {
-  RegExp regExp  = RegExp(r'\b\d{1,3}(?:(?:[.,]\d{3})*(?:[.,]\d{2})?)?\b');
+  RegExp regExp = RegExp(r'\b\d+((\.|,)\d{3})*((\.|,)\d{1,2})?');
+
+
   // Keep track of the offsets of the replacements to avoid overlapping
   int offset = 0;
 
@@ -83,29 +69,23 @@ Future<String> processText(String text, double multiplier) async {
 
   for (RegExpMatch match in regExp.allMatches(text)) {
     String priceString = text.substring(match.start, match.end);
-    if (isNumeric(priceString)) {
-      double? newPrice = await convertPrice(priceString, multiplier);
-      // If convertPrice returned null, skip this price
-    if (newPrice != null) {
+    priceString = priceString.replaceAll(RegExp(r'\D*$'), '');
+    priceString = priceString.replaceAll(',', '');
+    
+    if (double.tryParse(priceString) != null) {
+      double price = double.parse(priceString);
+      double newPrice = price * multiplier;
+
       // Add the text before the match, and the replacement text
       buffer
         ..write(text.substring(offset, match.start))
-        ..write(newPrice.toStringAsFixed(2));  // Keep the decimal points
+        ..write(newPrice.toStringAsFixed(2)); // Keep the decimal points
       offset = match.end;
     }
-
-    }
-    
-    
   }
 
   // Add the remaining text after the last match
   buffer.write(text.substring(offset));
 
   return buffer.toString();
-}
-
-
-bool isNumeric(String s) {
-  return double.tryParse(s) != null;
 }
