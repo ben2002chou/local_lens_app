@@ -24,9 +24,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-var sourceRate = 1.0; // global rate variable. This is the rate that will be used to convert the prices
-var targetRate = 1.0;
-var rate = 1.0;
+var rate =
+    1.0; // global rate variable. This is the rate that will be used to convert the prices
 // Future<Map<String, dynamic>> getRates() async {
 //   Map<String, dynamic> call = await loadExchangeRates();
 //   return call['rates'];
@@ -41,7 +40,8 @@ class _HomeState extends State<Home> {
   String? selectedSourceCurrency;
   String? selectedTargetCurrency;
   Map<String, double>? currencyRates;
-
+  var sourceRate = 1.0;
+  var targetRate = 1.0;
   Future<void> getRates() async {
     try {
       Map<String, dynamic> call = await loadExchangeRates();
@@ -119,6 +119,7 @@ class _HomeState extends State<Home> {
                                   sourceRate =
                                       currencyRates?[selectedSourceCurrency] ??
                                           1.0;
+                                  // recalculate the rate
                                   rate = targetRate / sourceRate;
                                 });
                               },
@@ -137,11 +138,13 @@ class _HomeState extends State<Home> {
                                   targetRate =
                                       currencyRates?[selectedTargetCurrency] ??
                                           1.0;
+                                  // recalculate the rate
                                   rate = targetRate / sourceRate;
                                 });
                               },
                             ),
                             Text(
+                                // display the rate
                                 'Rate: ${rate}'),
                           ],
                         ),
