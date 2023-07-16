@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/foundation.dart';
-// This method currently works!
+
+
 Future<Map<String, dynamic>> fetchExchangeRates() async {
   final response =
       await http.get(Uri.parse('https://open.er-api.com/v6/latest/USD'));
