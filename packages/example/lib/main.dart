@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'nlp_detector_views/language_translator_view.dart';
 
 import 'vision_detector_views/text_detector_view.dart';
+
+import 'currency_conversion.dart';
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
