@@ -385,7 +385,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit;
+				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -520,7 +520,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit;
+				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -548,7 +548,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit;
+				PRODUCT_BUNDLE_IDENTIFIER = ben.developmenttest.mlkit2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

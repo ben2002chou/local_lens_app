@@ -46,7 +46,7 @@ enum TextRecognitionScript {
 /// Recognized text in an image.
 class RecognizedText {
   /// String containing all the text identified in an image. The string is empty if no text was recognized.
-  final String text;
+  String text;
 
   /// All the blocks of text present in image.
   final List<TextBlock> blocks;
@@ -69,7 +69,7 @@ class RecognizedText {
 /// A text block recognized in an image that consists of a list of text lines.
 class TextBlock {
   /// String representation of the text block that was recognized.
-  final String text;
+  String text;
 
   /// List of text lines that make up the block.
   final List<TextLine> lines;

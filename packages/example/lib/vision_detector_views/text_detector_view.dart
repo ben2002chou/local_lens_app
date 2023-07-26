@@ -4,6 +4,8 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 
 import 'detector_view.dart';
 import 'painters/text_detector_painter.dart';
+import '../currency_conversion.dart';
+import '../main.dart';
 
 class TextRecognizerView extends StatefulWidget {
   @override
@@ -12,7 +14,8 @@ class TextRecognizerView extends StatefulWidget {
 
 class _TextRecognizerViewState extends State<TextRecognizerView> {
   final TextRecognizer _textRecognizer =
-      TextRecognizer(script: TextRecognitionScript.japanese);
+      TextRecognizer(script: TextRecognitionScript.chinese);
+
   bool _canProcess = true; // Flag to enable/disable processing
   bool _isBusy = false; // Flag to indicate if the detector is busy
   CustomPaint? _customPaint;
@@ -47,7 +50,15 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
     });
     final recognizedText = await _textRecognizer.processImage(inputImage);
     // translation happens here
+    for (final textBlock in recognizedText.blocks) {
+      // final text = textBlock.text;
+      // double convertedText = rate;
+      // // String translatedText = await onDeviceTranslator.translateText(text);
+      // textBlock.text = convertedText.toString();
 
+      textBlock.text = await processText(textBlock.text, rate);
+      
+    }
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {
       final painter = TextRecognizerPainter(
