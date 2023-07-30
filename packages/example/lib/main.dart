@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 import 'nlp_detector_views/language_translator_view.dart';
 
 import 'vision_detector_views/text_detector_view.dart';
 
-import 'currency_conversion.dart';
+import 'api/currency_conversion.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 
 Future<void> main() async {
   // print(await fetchExchangeRates());
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load();
   runApp(MyApp());
 }
 
@@ -64,6 +68,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getRates();
+    fetchPlaceRatings();
   }
 
   @override
@@ -151,6 +156,7 @@ class _HomeState extends State<Home> {
                                 'Rate: ${rate}'),
                           ],
                         ),
+
                 ],
               ),
             ),
@@ -160,6 +166,70 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+Future<void> requestLocationPermission() async {
+  PermissionStatus status = await Permission.location.status;
+  
+  if (status.isDenied || status.isRestricted || status.isPermanentlyDenied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+    ].request();
+
+    print(statuses[Permission.location]);
+  }
+}
+
+
+Future<Position> _getCurrentLocation() async {
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+}
+Future<dynamic> getPlaceDetails(
+    {required LatLng pos, required int radius, required String apiKey}) async {
+  double lat = pos.latitude;
+  double lng = pos.longitude;
+
+  final String url =
+      'https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location=$lat,$lng&radius=$radius&key=$apiKey';
+
+  var response = await http.get(Uri.parse(url));
+
+  var json = convert.jsonDecode(response.body);
+
+  return json;
+}
+void printPlaceRatings(dynamic json) {
+    print(json['results']);
+    var results = json['results'];
+    for (var place in results) {
+        print('Place: ${place['name']}, Rating: ${place['rating']}');
+    }
+}
+Future<void> fetchPlaceRatings() async {
+  // Request location permission
+  await requestLocationPermission();
+  
+  // Get the current location
+  Position position = await _getCurrentLocation();
+
+  // Get place details using the current location
+  String googleMapsApiKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
+
+  var details = await getPlaceDetails(
+    pos: LatLng(position.latitude, position.longitude),
+    radius: 10,
+    apiKey: googleMapsApiKey,
+  );
+
+  // Get and print the place name and rating
+  print(details['results']);
+  for (var result in details['results']) {
+    print('Name: ${result['name']}, Rating: ${result['rating']}');
+  }
+}
+
+
 
 class CustomCard extends StatelessWidget {
   final String _label;

@@ -4,9 +4,9 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 
 import 'detector_view.dart';
 import 'painters/text_detector_painter.dart';
-import '../currency_conversion.dart';
+import '../api/currency_conversion.dart';
 import '../main.dart';
-
+import '../api/translation_api.dart';
 class TextRecognizerView extends StatefulWidget {
   @override
   State<TextRecognizerView> createState() => _TextRecognizerViewState();
@@ -49,20 +49,21 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
       _text = '';
     });
     final recognizedText = await _textRecognizer.processImage(inputImage);
-    // translation happens here
-    for (final textBlock in recognizedText.blocks) {
-      // final text = textBlock.text;
-      // double convertedText = rate;
-      // // String translatedText = await onDeviceTranslator.translateText(text);
-      // textBlock.text = convertedText.toString();
+    final translatedText = await TranslationApi.translateRecognizedText(recognizedText);
+    final resultText = translatedText ?? recognizedText;
+    // for (final textBlock in resultText.blocks) {
+    //   // final text = textBlock.text;
+    //   // double convertedText = rate;
+    //   // // String translatedText = await onDeviceTranslator.translateText(text);
+    //   // textBlock.text = convertedText.toString();
 
-      textBlock.text = await processText(textBlock.text, rate);
+    //   textBlock.text = await processText(textBlock.text, rate);
       
-    }
+    // }
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {
       final painter = TextRecognizerPainter(
-        recognizedText,
+        resultText,
         inputImage.metadata!.size,
         inputImage.metadata!.rotation,
         _cameraLensDirection,

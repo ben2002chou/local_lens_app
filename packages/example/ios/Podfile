@@ -32,6 +32,7 @@ target 'Runner' do
   pod 'GoogleMLKit/TextRecognitionDevanagari', '~> 4.0.0'
   pod 'GoogleMLKit/TextRecognitionJapanese', '~> 4.0.0'
   pod 'GoogleMLKit/TextRecognitionKorean', '~> 4.0.0'
+  pod 'GoogleMaps'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end

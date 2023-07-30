@@ -1,4 +1,7 @@
 # LocaLens App
+## API Key
+- add .env file in root with 
+GOOGLE_MAPS_API_KEY=["Your API key here"]
 ## Requirements
 
 ### iOS
