@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 import 'coordinates_translator.dart';
-
+import 'dart:math';
 class TextRecognizerPainter extends CustomPainter {
   TextRecognizerPainter(
     this.recognizedText,
@@ -82,8 +82,10 @@ class TextRecognizerPainter extends CustomPainter {
       final ratioWidth = boxWidth / textPainter.width;
       final ratioHeight = boxHeight / textPainter.height;
 
-      final ratio = ratioWidth < ratioHeight ? ratioWidth : ratioHeight;
-      final newFontSize = 13 * ratio; // Base font size is 16
+      final ratio = ratioWidth * ratioHeight;
+      final calculatedFontSize = 16 * ratio; // Assuming your base font size is 16
+      final newFontSize = min(calculatedFontSize, 16.0); // Ensures the maximum font size is 18
+
 
       final ParagraphBuilder builder = ParagraphBuilder(
         ParagraphStyle(
