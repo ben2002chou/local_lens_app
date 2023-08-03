@@ -214,7 +214,7 @@ Future<void> fetchPlaceRatings() async {
   Position position = await _getCurrentLocation();
 
   // Get place details using the current location
-  String googleMapsApiKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
+  String googleMapsApiKey = dotenv.env['GOOGLE_API_KEY']!;
 
   var details = await getPlaceDetails(
     pos: LatLng(position.latitude, position.longitude),

@@ -216,6 +216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.1"
+  google_cloud_translation:
+    dependency: "direct main"
+    description:
+      name: google_cloud_translation
+      sha256: "13944a6832231fe3b750f7f22aa890daf4c2d3b014528fbb38cc0037d406e22f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   google_maps:
     dependency: transitive
     description:
@@ -302,14 +310,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.15.4"
-  http:
-    dependency: "direct main"
+  html_unescape:
+    dependency: transitive
     description:
-      name: http
-      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
+      name: html_unescape
+      sha256: "15362d7a18f19d7b742ef8dcb811f5fd2a2df98db9f80ea393c075189e0b61e3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.6"
   http_parser:
     dependency: transitive
     description:

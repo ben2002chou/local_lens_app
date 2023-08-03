@@ -7,6 +7,7 @@ import 'painters/text_detector_painter.dart';
 import '../api/currency_conversion.dart';
 import '../main.dart';
 import '../api/translation_api.dart';
+import '../api/cloud_translation_api.dart';
 class TextRecognizerView extends StatefulWidget {
   @override
   State<TextRecognizerView> createState() => _TextRecognizerViewState();
@@ -49,7 +50,7 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
       _text = '';
     });
     final recognizedText = await _textRecognizer.processImage(inputImage);
-    final translatedText = await TranslationApi.translateRecognizedText(recognizedText);
+    final translatedText = await CloudTranslationApi.translateRecognizedText(recognizedText);
     final resultText = translatedText ?? recognizedText;
     // for (final textBlock in resultText.blocks) {
     //   // final text = textBlock.text;
