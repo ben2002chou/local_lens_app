@@ -50,7 +50,7 @@ class _TextRecognizerViewState extends State<TextRecognizerView> {
       _text = '';
     });
     final recognizedText = await _textRecognizer.processImage(inputImage);
-    final translatedText = await CloudTranslationApi.translateRecognizedText(recognizedText);
+    final translatedText = await TranslationApi.translateRecognizedText(recognizedText);
     final resultText = translatedText ?? recognizedText;
     // for (final textBlock in resultText.blocks) {
     //   // final text = textBlock.text;
