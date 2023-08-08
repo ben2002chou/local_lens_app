@@ -28,7 +28,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   google_cloud_translation: ^0.0.3
   google_mlkit_translation: ^0.8.0
-  google_mlkit_text_recognition: ^0.10.0
+  google_mlkit_text_recognition: ^0.9.0
   google_mlkit_commons: ^0.5.0
   
  
