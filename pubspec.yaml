@@ -1,4 +1,4 @@
-name: local_lens_app
+name: google_ml_kit_example
 description: Demonstrates how to use the google_ml_kit plugin.
 
 # The following line prevents the package from being accidentally published to
@@ -23,20 +23,13 @@ dependencies:
   google_maps_flutter: ^2.4.0
   geolocator: ^ 9.0.2
   permission_handler: ^ 10.4.3 
-
-
-  
-  
-
-
-  
-
   
   google_mlkit_language_id: ^0.8.0
   flutter_dotenv: ^5.1.0
   google_cloud_translation: ^0.0.3
   google_mlkit_translation: ^0.8.0
   google_mlkit_text_recognition: ^0.10.0
+  google_mlkit_commons: ^0.5.0
   
  
 
