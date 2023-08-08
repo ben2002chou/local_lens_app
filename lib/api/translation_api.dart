@@ -34,8 +34,8 @@ class TranslationApi {
 
     int i = 1;
     for (TextBlock textBlock in recognizedText.blocks) {
-      textBlock.text = await processText(textBlock.text, rate);
-      texts.add(textBlock.text);
+      var temp = await processText(textBlock.text, rate);
+      texts.add(temp);
       texts.add('=00' + i.toString() + '=');
       i++;
       blocks.add(textBlock);
