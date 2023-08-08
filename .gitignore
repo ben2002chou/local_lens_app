@@ -43,4 +43,4 @@ app.*.symbols
 app.*.map.json
 
 # weird files
-ios/Runner.xcodeproj/project.pbxproj
+# ios/Runner.xcodeproj/project.pbxproj
