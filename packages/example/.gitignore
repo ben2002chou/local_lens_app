@@ -41,3 +41,7 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Some weird files
+.ios/Runner.xcodeproj/project.pbxproj
+../google_ml_kit/.flutter-plugins
