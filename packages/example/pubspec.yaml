@@ -19,7 +19,7 @@ dependencies:
   path_provider: ^2.0.15
   url_launcher: ^6.0.10 
   shared_preferences: ^2.2.0
-  http: ^1.1.0
+  
   google_maps_flutter: ^2.4.0
   geolocator: ^ 9.0.2
   permission_handler: ^ 10.4.3 
@@ -34,8 +34,10 @@ dependencies:
   
   google_mlkit_translation:
     path: ../google_mlkit_translation
+  
   google_mlkit_language_id: ^0.8.0
   flutter_dotenv: ^5.1.0
+  google_cloud_translation: ^0.0.3
   
  
 

@@ -7,6 +7,7 @@ import 'painters/text_detector_painter.dart';
 import '../api/currency_conversion.dart';
 import '../main.dart';
 import '../api/translation_api.dart';
+import '../api/cloud_translation_api.dart';
 class TextRecognizerView extends StatefulWidget {
   @override
   State<TextRecognizerView> createState() => _TextRecognizerViewState();
